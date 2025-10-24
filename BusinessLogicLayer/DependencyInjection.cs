@@ -1,5 +1,7 @@
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.Mappers;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.Validators;
+using eCommerce.OrdersMicroservice.DataAccessLayer.Repositories;
+using eCommerce.OrdersMicroservice.DataAccessLayer.RepositoryContracts;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +19,8 @@ public static class DependencyInjection
         
         // Automapper - Similar to above, we use the assemblies so we don't add each mapping profile individually
         services.AddAutoMapper(typeof(OrderToOrderResponseMappingProfile).Assembly);
+
+        services.AddScoped<IOrdersRepository, OrdersRepository>();
 
         return services;
     }
