@@ -28,19 +28,36 @@ public class OrdersService : IOrdersService
         _orderItemUpdateRequestValidator = orderItemUpdateRequestValidator;
     }
     
-    public Task<List<OrderResponse?>> GetOrders()
+    public async Task<List<OrderResponse?>> GetOrders()
     {
-        throw new NotImplementedException();
+        IEnumerable<Order?> orders = await _ordersRepository.GetOrders();
+
+        IEnumerable<OrderResponse?> orderResponses = _mapper.Map<IEnumerable<OrderResponse>>(orders);
+
+        return orderResponses.ToList();
     }
 
-    public Task<List<OrderResponse?>> GetOrdersByCondition(FilterDefinition<Order> filter)
+    public async Task<List<OrderResponse?>> GetOrdersByCondition(FilterDefinition<Order> filter)
     {
-        throw new NotImplementedException();
+        IEnumerable<Order?> orders = await _ordersRepository.GetOrdersByCondition(filter);
+
+        IEnumerable<OrderResponse?> orderResponses = _mapper.Map<IEnumerable<OrderResponse>>(orders);
+
+        return orderResponses.ToList();
     }
 
-    public Task<OrderResponse?> GetOrderByCondition(FilterDefinition<Order> filter)
+    public async Task<OrderResponse?> GetOrderByCondition(FilterDefinition<Order> filter)
     {
-        throw new NotImplementedException();
+        Order? order = await _ordersRepository.GetOrderByCondition(filter);
+
+        if (order == null)
+        {
+            return null;
+        }
+        
+        OrderResponse orderResponse = _mapper.Map<OrderResponse>(order);
+
+        return orderResponse;
     }
 
     public async Task<OrderResponse?> AddOrder(OrderAddRequest orderAddRequest)
@@ -153,8 +170,18 @@ public class OrdersService : IOrdersService
         return _mapper.Map<OrderResponse>(updatedOrder);
     }
 
-    public Task<bool> DeleteOrder(Guid orderId)
+    public async Task<bool> DeleteOrder(Guid orderId)
     {
-        throw new NotImplementedException();
+        FilterDefinition<Order> filter = Builders<Order>.Filter.Eq(temp => temp.OrderId, orderId);
+
+        Order? existingOrder = await _ordersRepository.GetOrderByCondition(filter);
+
+        if (existingOrder == null)
+        {
+            return false;
+        }
+
+        bool isDeleted = await _ordersRepository.DeleteOrder(orderId);
+        return isDeleted;
     }
 }
