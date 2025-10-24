@@ -1,5 +1,5 @@
 # eCommerce.OrdersService
-Products Microservice
+Orders Service Microservice
 Layered Architecture
 
 * MongoDB [NoSQL]
