@@ -73,7 +73,7 @@ public class OrdersService : IOrdersService
             }
         }
         
-        // TO DO: Add logic for checking if User od exists in Users microservice table
+        // TO DO: Add logic for checking if User id exists in Users microservice table
         
         
         // Convert data from OrderAddRequest to Order
@@ -98,9 +98,59 @@ public class OrdersService : IOrdersService
         return _mapper.Map<OrderResponse>(addedOrder);
     }
 
-    public Task<OrderResponse?> UpdateOrder(OrderUpdateRequest orderUpdateRequest)
+    public async Task<OrderResponse?> UpdateOrder(OrderUpdateRequest orderUpdateRequest)
     {
-        throw new NotImplementedException();
+        if (orderUpdateRequest == null)
+        {
+            throw new ArgumentNullException(nameof(orderUpdateRequest));
+        }
+
+        ValidationResult orderUpdateRequestValidationResult = await _orderUpdateRequestValidator.ValidateAsync(orderUpdateRequest);
+
+        if (!orderUpdateRequestValidationResult.IsValid)
+        {
+            string errors = string.Join(", ", orderUpdateRequestValidationResult.Errors.Select(temp => temp.ErrorMessage));
+
+            throw new ArgumentException(errors);
+        }
+        
+        // Validate order items using Fluent Validation
+        foreach (OrderItemUpdateRequest orderItemUpdateRequest in orderUpdateRequest.OrderItems)
+        {
+            ValidationResult orderItemUpdateRequestValidationResult = await _orderItemUpdateRequestValidator.ValidateAsync(orderItemUpdateRequest);
+
+            if (!orderItemUpdateRequestValidationResult.IsValid)
+            {
+                string errors = string.Join(", ",
+                    orderItemUpdateRequestValidationResult.Errors.Select(temp => temp.ErrorMessage));
+
+                throw new Exception(errors);
+            }
+        }
+        
+        // TO DO: Add logic for checking if User id exists in Users microservice table
+        
+        
+        // Convert data from OrderAddRequest to Order
+        Order orderInput = _mapper.Map<Order>(orderUpdateRequest);
+        
+        // Generate values
+        foreach (OrderItem orderItem in orderInput.OrderItems)
+        {
+            orderItem.TotalPrice = orderItem.Quantity * orderItem.UnitPrice;
+        }
+
+        orderInput.TotalBill = orderInput.OrderItems.Sum(temp => temp.TotalPrice);
+        
+        // Invoke repository
+        Order? updatedOrder = await _ordersRepository.UpdateOrder(orderInput);
+
+        if (updatedOrder == null)
+        {
+            return null;
+        }
+
+        return _mapper.Map<OrderResponse>(updatedOrder);
     }
 
     public Task<bool> DeleteOrder(Guid orderId)
