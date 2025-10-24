@@ -109,7 +109,7 @@ public class OrdersController : ControllerBase
 
         if (orderResponse == null)
         {
-            return Problem("Error creating order");
+            return Problem("Error updating order");
         }
 
         return Ok(orderResponse);
