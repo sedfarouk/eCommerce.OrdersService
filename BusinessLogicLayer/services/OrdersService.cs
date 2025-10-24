@@ -1,3 +1,4 @@
+using FluentValidation.Results;
 using AutoMapper;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.DTO;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.ServiceContracts;
@@ -42,9 +43,59 @@ public class OrdersService : IOrdersService
         throw new NotImplementedException();
     }
 
-    public Task<OrderResponse?> AddOrder(OrderAddRequest orderAddRequest)
+    public async Task<OrderResponse?> AddOrder(OrderAddRequest orderAddRequest)
     {
-        throw new NotImplementedException();
+        if (orderAddRequest == null)
+        {
+            throw new ArgumentNullException(nameof(orderAddRequest));
+        }
+
+        ValidationResult orderAddRequestValidationResult = await _orderAddRequestValidator.ValidateAsync(orderAddRequest);
+
+        if (!orderAddRequestValidationResult.IsValid)
+        {
+            string errors = string.Join(", ", orderAddRequestValidationResult.Errors.Select(temp => temp.ErrorMessage));
+
+            throw new ArgumentException(errors);
+        }
+        
+        // Validate order items using Fluent Validation
+        foreach (OrderItemAddRequest orderItemAddRequest in orderAddRequest.OrderItems)
+        {
+            ValidationResult orderItemAddRequestValidationResult = await _orderItemAddRequestValidator.ValidateAsync(orderItemAddRequest);
+
+            if (!orderItemAddRequestValidationResult.IsValid)
+            {
+                string errors = string.Join(", ",
+                    orderItemAddRequestValidationResult.Errors.Select(temp => temp.ErrorMessage));
+
+                throw new Exception(errors);
+            }
+        }
+        
+        // TO DO: Add logic for checking if User od exists in Users microservice table
+        
+        
+        // Convert data from OrderAddRequest to Order
+        Order orderInput = _mapper.Map<Order>(orderAddRequest);
+        
+        // Generate values
+        foreach (OrderItem orderItem in orderInput.OrderItems)
+        {
+            orderItem.TotalPrice = orderItem.Quantity * orderItem.UnitPrice;
+        }
+
+        orderInput.TotalBill = orderInput.OrderItems.Sum(temp => temp.TotalPrice);
+        
+        // Invoke repository
+        Order? addedOrder = await _ordersRepository.AddOrder(orderInput);
+
+        if (addedOrder == null)
+        {
+            return null;
+        }
+
+        return _mapper.Map<OrderResponse>(addedOrder);
     }
 
     public Task<OrderResponse?> UpdateOrder(OrderUpdateRequest orderUpdateRequest)
