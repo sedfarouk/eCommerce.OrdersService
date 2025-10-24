@@ -32,6 +32,12 @@ public class OrdersRepository : IOrdersRepository
     public async Task<Order?> AddOrder(Order order)
     {
         order.OrderId = Guid.NewGuid();
+        order._id = order.OrderId;
+
+        foreach (OrderItem orderItem in order.OrderItems)
+        {
+            orderItem._id = Guid.NewGuid();
+        }
 
         await _orders.InsertOneAsync(order);
         return order;
