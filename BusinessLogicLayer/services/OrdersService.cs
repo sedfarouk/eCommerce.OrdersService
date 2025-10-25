@@ -1,6 +1,7 @@
 using FluentValidation.Results;
 using AutoMapper;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.DTO;
+using eCommerce.OrdersMicroservice.BusinessLogicLayer.HttpClient;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.ServiceContracts;
 using eCommerce.OrdersMicroservice.DataAccessLayer.Entities;
 using eCommerce.OrdersMicroservice.DataAccessLayer.RepositoryContracts;
@@ -13,12 +14,14 @@ public class OrdersService : IOrdersService
 {
     private readonly IOrdersRepository _ordersRepository;
     private readonly IMapper _mapper;
+    private readonly UsersMicroserviceClient _usersMicroserviceClient;
+    private readonly ProductsMicroserviceClient _productsMicroserviceClient;
     private readonly IValidator<OrderAddRequest> _orderAddRequestValidator;
     private readonly IValidator<OrderUpdateRequest> _orderUpdateRequestValidator;
     private readonly IValidator<OrderItemAddRequest> _orderItemAddRequestValidator;
     private readonly IValidator<OrderItemUpdateRequest> _orderItemUpdateRequestValidator;
     
-    public OrdersService(IOrdersRepository ordersRepository, IMapper mapper, IValidator<OrderAddRequest> orderAddRequestValidator,IValidator<OrderItemAddRequest> orderItemAddRequestValidator, IValidator<OrderUpdateRequest> orderUpdateRequestValidator, IValidator<OrderItemUpdateRequest> orderItemUpdateRequestValidator)
+    public OrdersService(IOrdersRepository ordersRepository, IMapper mapper, IValidator<OrderAddRequest> orderAddRequestValidator,IValidator<OrderItemAddRequest> orderItemAddRequestValidator, IValidator<OrderUpdateRequest> orderUpdateRequestValidator, IValidator<OrderItemUpdateRequest> orderItemUpdateRequestValidator, UsersMicroserviceClient usersMicroserviceClient, ProductsMicroserviceClient productsMicroserviceClient)
     {
         _ordersRepository = ordersRepository;
         _mapper = mapper;
@@ -26,6 +29,8 @@ public class OrdersService : IOrdersService
         _orderItemAddRequestValidator = orderItemAddRequestValidator;
         _orderUpdateRequestValidator = orderUpdateRequestValidator;
         _orderItemUpdateRequestValidator = orderItemUpdateRequestValidator;
+        _usersMicroserviceClient = usersMicroserviceClient;
+        _productsMicroserviceClient = productsMicroserviceClient;
     }
     
     public async Task<List<OrderResponse?>> GetOrders()
@@ -86,12 +91,24 @@ public class OrdersService : IOrdersService
                 string errors = string.Join(", ",
                     orderItemAddRequestValidationResult.Errors.Select(temp => temp.ErrorMessage));
 
-                throw new Exception(errors);
+                throw new ArgumentException(errors);
+            }
+            
+            ProductDTO? productDto = await _productsMicroserviceClient.GetProductByProductId(orderItemAddRequest.ProductId);
+
+            if (productDto is null)
+            {
+                throw new ArgumentException($"Invalid product id - {orderItemAddRequest.ProductId}");
             }
         }
         
         // TO DO: Add logic for checking if User id exists in Users microservice table
-        
+        UserDTO? user = await _usersMicroserviceClient.GetUserByUserId(orderAddRequest.UserId);
+
+        if (user == null)
+        {
+            throw new ArgumentException("Invalid user id");
+        }
         
         // Convert data from OrderAddRequest to Order
         Order orderInput = _mapper.Map<Order>(orderAddRequest);
@@ -143,10 +160,22 @@ public class OrdersService : IOrdersService
 
                 throw new Exception(errors);
             }
+            
+            ProductDTO? productDto = await _productsMicroserviceClient.GetProductByProductId(orderItemUpdateRequest.ProductId);
+
+            if (productDto is null)
+            {
+                throw new ArgumentException($"Invalid product id - {orderItemUpdateRequest.ProductId}");
+            }
         }
         
         // TO DO: Add logic for checking if User id exists in Users microservice table
-        
+        UserDTO? user = await _usersMicroserviceClient.GetUserByUserId(orderUpdateRequest.UserId);
+
+        if (user == null)
+        {
+            throw new ArgumentException("Invalid user id");
+        }
         
         // Convert data from OrderAddRequest to Order
         Order orderInput = _mapper.Map<Order>(orderUpdateRequest);

@@ -1,4 +1,5 @@
 using eCommerce.OrdersMicroservice.BusinessLogicLayer;
+using eCommerce.OrdersMicroservice.BusinessLogicLayer.HttpClient;
 using eCommerce.OrdersMicroservice.DataAccessLayer;
 using FluentValidation.AspNetCore;
 using OrdersMicroservice.API.Middleware;
@@ -27,6 +28,16 @@ builder.Services.AddCors(opt =>
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
+});
+
+builder.Services.AddHttpClient<UsersMicroserviceClient>(client =>
+{
+    client.BaseAddress = new Uri($"http://{builder.Configuration["UsersMicroserviceName"]}:{builder.Configuration["UsersMicroservicePort"]}");
+});
+
+builder.Services.AddHttpClient<ProductsMicroserviceClient>(client =>
+{
+    client.BaseAddress = new Uri($"http://{builder.Configuration["ProductsMicroserviceName"]}:{builder.Configuration["ProductsMicroservicePort"]}");
 });
 
 var app = builder.Build();
