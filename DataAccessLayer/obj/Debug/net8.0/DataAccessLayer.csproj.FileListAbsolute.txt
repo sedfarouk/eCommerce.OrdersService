@@ -1,0 +1,13 @@
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/DataAccessLayer/bin/Debug/net8.0/DataAccessLayer.deps.json
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/DataAccessLayer/bin/Debug/net8.0/DataAccessLayer.dll
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/DataAccessLayer/bin/Debug/net8.0/DataAccessLayer.pdb
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/DataAccessLayer/obj/Debug/net8.0/DataAccessLayer.csproj.AssemblyReference.cache
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/DataAccessLayer/obj/Debug/net8.0/DataAccessLayer.GeneratedMSBuildEditorConfig.editorconfig
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/DataAccessLayer/obj/Debug/net8.0/DataAccessLayer.AssemblyInfoInputs.cache
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/DataAccessLayer/obj/Debug/net8.0/DataAccessLayer.AssemblyInfo.cs
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/DataAccessLayer/obj/Debug/net8.0/DataAccessLayer.csproj.CoreCompileInputs.cache
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/DataAccessLayer/obj/Debug/net8.0/DataAccessLayer.sourcelink.json
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/DataAccessLayer/obj/Debug/net8.0/DataAccessLayer.dll
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/DataAccessLayer/obj/Debug/net8.0/refint/DataAccessLayer.dll
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/DataAccessLayer/obj/Debug/net8.0/DataAccessLayer.pdb
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/DataAccessLayer/obj/Debug/net8.0/ref/DataAccessLayer.dll

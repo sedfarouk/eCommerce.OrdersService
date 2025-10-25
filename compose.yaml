@@ -1,0 +1,30 @@
+﻿services:
+  ordersmicroservice.api:
+    image: ordersmicroservice.api
+    build:
+      context: .
+      dockerfile: OrdersMicroservice.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - MONGODB_HOST=mongodb-container
+      - MONGODB_PORT=27017
+      - MONGODB_DATABASE=OrdersDatabase
+      - UsersMicroserviceName=localhost
+      - UsersMicroservicePort=5050
+    ports:
+      - "7000:8080"
+    networks:
+      - orders-mongodb-network
+
+  mongodb-container:
+    image: "mongo:8.0.15-noble"
+    ports:
+      - "27017:27017"
+    volumes:
+      - ../orders-db-init/init_db.js:/docker-entrypoint-initdb.d/init_db.js
+    networks:
+      - orders-mongodb-network
+
+networks:
+  orders-mongodb-network:
+    driver: bridge

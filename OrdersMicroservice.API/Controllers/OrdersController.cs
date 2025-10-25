@@ -5,7 +5,7 @@ using eCommerce.OrdersMicroservice.DataAccessLayer.RepositoryContracts;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 
-namespace OrdersMicroservice.API.ApiControllers;
+namespace OrdersMicroservice.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -19,8 +19,8 @@ public class OrdersController : ControllerBase
     }
     
     // GET: /api/orders
-    [HttpGet("/")]
-    public async Task<IEnumerable<OrderResponse?>> GetOrders()
+    [HttpGet]
+    public async Task<IEnumerable<OrderResponse?>> Get()
     {
         List<OrderResponse?> orders = await _ordersService.GetOrders();
 
@@ -28,7 +28,7 @@ public class OrdersController : ControllerBase
     }
     
     // GET: /api/orders/search/order_id/{orderId}
-    [HttpGet("/search/orderId/{orderId}")]
+    [HttpGet("search/orderId/{orderId}")]
     public async Task<OrderResponse?> GetOrderByOrderId(Guid orderId)
     {
         FilterDefinition<Order> filter = Builders<Order>.Filter.Eq(temp => temp.OrderId, orderId);
@@ -39,7 +39,7 @@ public class OrdersController : ControllerBase
     }
     
     // GET: /api/orders/search/product_id/{productId}
-    [HttpGet("/search/productId/{productId}")]
+    [HttpGet("search/productId/{productId}")]
     public async Task<IEnumerable<OrderResponse?>> GetOrdersByProductId(Guid productId)
     {
         FilterDefinition<Order> filter = Builders<Order>.Filter.ElemMatch(temp => temp.OrderItems,
@@ -51,7 +51,7 @@ public class OrdersController : ControllerBase
     }
     
     // GET: /api/orders/search/order_date/{orderDate}
-    [HttpGet("/search/orderDate/{orderDate}")]
+    [HttpGet("search/orderDate/{orderDate}")]
     public async Task<IEnumerable<OrderResponse?>> GetOrdersByOrderDate(DateTime dateTime)
     {
         FilterDefinition<Order> filter = Builders<Order>.Filter.Eq(temp => temp.OrderDate.ToString("yyy-MM-dd"), dateTime.ToString("yyy-MM-dd"));
@@ -62,7 +62,7 @@ public class OrdersController : ControllerBase
     }
     
     // GET: /api/orders/search/user_id/{userId}
-    [HttpGet("/search/{userId}/{userId}")]
+    [HttpGet("search/userId/{userId}")]
     public async Task<IEnumerable<OrderResponse?>> GetOrdersByUserId(Guid userId)
     {
         FilterDefinition<Order> filter = Builders<Order>.Filter.Eq(temp => temp.UserId, userId);

@@ -1,0 +1,16 @@
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/BusinessLogicLayer/bin/Debug/net8.0/BusinessLogicLayer.deps.json
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/BusinessLogicLayer/bin/Debug/net8.0/BusinessLogicLayer.dll
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/BusinessLogicLayer/bin/Debug/net8.0/BusinessLogicLayer.pdb
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/BusinessLogicLayer/bin/Debug/net8.0/DataAccessLayer.dll
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/BusinessLogicLayer/bin/Debug/net8.0/DataAccessLayer.pdb
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/BusinessLogicLayer/obj/Debug/net8.0/BusinessLogicLayer.csproj.AssemblyReference.cache
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/BusinessLogicLayer/obj/Debug/net8.0/BusinessLogicLayer.GeneratedMSBuildEditorConfig.editorconfig
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/BusinessLogicLayer/obj/Debug/net8.0/BusinessLogicLayer.AssemblyInfoInputs.cache
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/BusinessLogicLayer/obj/Debug/net8.0/BusinessLogicLayer.AssemblyInfo.cs
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/BusinessLogicLayer/obj/Debug/net8.0/BusinessLogicLayer.csproj.CoreCompileInputs.cache
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/BusinessLogicLayer/obj/Debug/net8.0/BusinessLogicLayer.sourcelink.json
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/BusinessLogicLayer/obj/Debug/net8.0/BusinessLogicLayer.csproj.CopyComplete
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/BusinessLogicLayer/obj/Debug/net8.0/BusinessLogicLayer.dll
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/BusinessLogicLayer/obj/Debug/net8.0/refint/BusinessLogicLayer.dll
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/BusinessLogicLayer/obj/Debug/net8.0/BusinessLogicLayer.pdb
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/BusinessLogicLayer/obj/Debug/net8.0/ref/BusinessLogicLayer.dll
