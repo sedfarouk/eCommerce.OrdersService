@@ -35,9 +35,9 @@
     environment:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_ENVIRONMENT=Development
-      - POSTGRES_HOST=localhost
+      - POSTGRES_HOST=products_postgres_container
       - POSTGRES_PORT=5432
-      - POSTGRES_DATABASE=eCommerceProducts
+      - POSTGRES_DATABASE=ecommerceproductsdatabase
       - POSTGRES_PASSWORD=admin
       - POSTGRES_USER=postgres
     networks:
@@ -51,24 +51,24 @@
     environment:
       - POSTGRES_HOST=localhost
       - POSTGRES_PORT=5432
-      - POSTGRES_DATABASE=eCommerceProducts
+      - POSTGRES_DATABASE=ecommerceproductsdatabase
       - POSTGRES_PASSWORD=admin
       - POSTGRES_USER=postgres
     ports:
       - "5433:5432"
     volumes:
-      - ../postgres-products-init/:/docker-entrypoint-initdb.d
+      - ../postgres-products-init:/docker-entrypoint-initdb.d
     networks:
       - products-postgres-network
   
   users_container:
     image: far001/ecommerce-users-microservice:v1.0
     ports:
-      - "5000:8080"
+      - "5000:9090"
     environment:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_ENVIRONMENT=Development
-      - POSTGRES_HOST=localhost
+      - POSTGRES_HOST=users_postgres_container
       - POSTGRES_PORT=5432
       - POSTGRES_DATABASE=ecommerceusers
       - POSTGRES_PASSWORD=admin
@@ -76,8 +76,6 @@
     networks:
       - users-postgres-network
       - ecommerce-network
-    volumes:
-      - ../postgres-users-init:/docker-entrypoint-initdb.d
     depends_on:
       - users_postgres_container
 
@@ -91,6 +89,8 @@
       - POSTGRES_USER=postgres
     ports:
       - "5434:5432"
+    volumes:
+      - ../postgres-users-init:/docker-entrypoint-initdb.d
     networks:
       - users-postgres-network
 
