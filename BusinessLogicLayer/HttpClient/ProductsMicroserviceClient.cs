@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Json;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.DTO;
 
@@ -13,14 +14,26 @@ public class ProductsMicroserviceClient
         _httpClient = httpClient;
     }
 
-    public async Task<ProductDTO> GetProductByProductId(Guid productId)
+    public async Task<ProductDTO?> GetProductByProductId(Guid productId)
     {
-        ProductDTO? productDto = await _httpClient.GetFromJsonAsync<ProductDTO>($"api/products/search/{productId}");
+        HttpResponseMessage response = await _httpClient.GetAsync($"api/products/search/product-id/{productId}");
 
-        if (productDto == null)
+        if (!response.IsSuccessStatusCode)
         {
-            return null;
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new HttpRequestException("Bad request", null, HttpStatusCode.BadRequest);
+            }
+
+            throw new HttpRequestException($"Http request failed with status code {response.StatusCode}");
         }
+
+        ProductDTO? productDto = await response.Content.ReadFromJsonAsync<ProductDTO>();
 
         return productDto;
     }

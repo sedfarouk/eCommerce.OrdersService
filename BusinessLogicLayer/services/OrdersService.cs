@@ -39,6 +39,27 @@ public class OrdersService : IOrdersService
 
         IEnumerable<OrderResponse?> orderResponses = _mapper.Map<IEnumerable<OrderResponse>>(orders);
 
+        foreach (OrderResponse? orderResponse in orderResponses)
+        {
+            if (orderResponse == null)
+            {
+                continue;
+            }
+
+            foreach (OrderItemResponse orderItemResponse in orderResponse.OrderItems)
+            {
+                ProductDTO? productDto =
+                    await _productsMicroserviceClient.GetProductByProductId(orderItemResponse.ProductId);
+
+                if (productDto == null)
+                {
+                    continue;
+                }
+                
+                _mapper.Map<ProductDTO, OrderItemResponse>(productDto, orderItemResponse);
+            } 
+        }
+
         return orderResponses.ToList();
     }
 
