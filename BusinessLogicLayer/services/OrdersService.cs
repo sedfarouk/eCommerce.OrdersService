@@ -60,6 +60,18 @@ public class OrdersService : IOrdersService
             } 
         }
 
+        foreach (OrderResponse orderResponse in orderResponses)
+        {
+            UserDTO? userDto = await _usersMicroserviceClient.GetUserByUserId(orderResponse.UserId);
+
+            if (userDto is null)
+            {
+                continue;
+            }
+
+            _mapper.Map<UserDTO, OrderResponse>(userDto, orderResponse);
+        }
+
         return orderResponses.ToList();
     }
 
@@ -89,6 +101,18 @@ public class OrdersService : IOrdersService
                 _mapper.Map<ProductDTO, OrderItemResponse>(productDto, orderItemResponse);
             } 
         } 
+        
+        foreach (OrderResponse orderResponse in orderResponses)
+        {
+            UserDTO? userDto = await _usersMicroserviceClient.GetUserByUserId(orderResponse.UserId);
+
+            if (userDto is null)
+            {
+                continue;
+            }
+
+            _mapper.Map<UserDTO, OrderResponse>(userDto, orderResponse);
+        }
 
         return orderResponses.ToList();
     }
@@ -121,6 +145,16 @@ public class OrdersService : IOrdersService
             
             _mapper.Map<ProductDTO, OrderItemResponse>(productDto, orderItemResponse);
         }
+        
+
+        UserDTO? userDto = await _usersMicroserviceClient.GetUserByUserId(orderResponse.UserId);
+
+        if (userDto is null)
+        {
+            return null;
+        }
+
+        _mapper.Map<UserDTO, OrderResponse>(userDto, orderResponse);
 
         return orderResponse;
     }
@@ -209,6 +243,15 @@ public class OrdersService : IOrdersService
             
                 _mapper.Map<ProductDTO, OrderItemResponse>(productDto, orderItemResponse);
             }
+
+            UserDTO? userDto = await _usersMicroserviceClient.GetUserByUserId(addedOrderResponse.UserId);
+
+            if (userDto is null)
+            {
+                return addedOrderResponse;
+            }
+
+            _mapper.Map<UserDTO, OrderResponse>(userDto, addedOrderResponse);
         }
 
         return addedOrderResponse;
@@ -301,7 +344,16 @@ public class OrdersService : IOrdersService
             
             _mapper.Map<ProductDTO, OrderItemResponse>(productDto, orderItemResponse);
         }
+        
+        UserDTO? userDto = await _usersMicroserviceClient.GetUserByUserId(updatedOrderResponse.UserId);
 
+        if (userDto is null)
+        {
+            return updatedOrderResponse;
+        }
+
+        _mapper.Map<UserDTO, OrderResponse>(userDto, updatedOrderResponse);
+        
         return updatedOrderResponse;
     }
 
