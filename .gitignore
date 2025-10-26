@@ -1,11 +1,11 @@
-/BusinessLogicLayer/obj/
-/BusinessLogicLayer/config/
-/BusinessLogicLayer/bin/
+./BusinessLogicLayer/obj/
+./BusinessLogicLayer/config/
+./BusinessLogicLayer/bin/
 
-/DataAccessLayer/obj/
-/DataAccessLayer/config/
-/DataAccessLayer/bin/
+./DataAccessLayer/obj/
+./DataAccessLayer/config/
+./DataAccessLayer/bin/
 
-/OrdersMicroservice.API/obj/
-/OrdersMicroservice.API/config/
-/OrdersMicroservice.API/bin/
+./OrdersMicroservice.API/obj/
+./OrdersMicroservice.API/config/
+./OrdersMicroservice.API/bin/
