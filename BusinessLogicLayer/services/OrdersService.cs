@@ -68,6 +68,27 @@ public class OrdersService : IOrdersService
         IEnumerable<Order?> orders = await _ordersRepository.GetOrdersByCondition(filter);
 
         IEnumerable<OrderResponse?> orderResponses = _mapper.Map<IEnumerable<OrderResponse>>(orders);
+        
+        foreach (OrderResponse? orderResponse in orderResponses)
+        {
+            if (orderResponse == null)
+            {
+                continue;
+            }
+
+            foreach (OrderItemResponse orderItemResponse in orderResponse.OrderItems)
+            {
+                ProductDTO? productDto =
+                    await _productsMicroserviceClient.GetProductByProductId(orderItemResponse.ProductId);
+
+                if (productDto == null)
+                {
+                    continue;
+                }
+                
+                _mapper.Map<ProductDTO, OrderItemResponse>(productDto, orderItemResponse);
+            } 
+        } 
 
         return orderResponses.ToList();
     }
@@ -82,6 +103,24 @@ public class OrdersService : IOrdersService
         }
         
         OrderResponse orderResponse = _mapper.Map<OrderResponse>(order);
+
+        if (orderResponse == null)
+        {
+            return null;
+        }
+
+        foreach (OrderItemResponse orderItemResponse in orderResponse.OrderItems)
+        {
+            ProductDTO? productDto =
+                await _productsMicroserviceClient.GetProductByProductId(orderItemResponse.ProductId);
+
+            if (productDto == null)
+            {
+                continue;
+            }
+            
+            _mapper.Map<ProductDTO, OrderItemResponse>(productDto, orderItemResponse);
+        }
 
         return orderResponse;
     }
@@ -101,6 +140,8 @@ public class OrdersService : IOrdersService
 
             throw new ArgumentException(errors);
         }
+
+        List<ProductDTO?> productDtos = new List<ProductDTO?>();
         
         // Validate order items using Fluent Validation
         foreach (OrderItemAddRequest orderItemAddRequest in orderAddRequest.OrderItems)
@@ -121,6 +162,8 @@ public class OrdersService : IOrdersService
             {
                 throw new ArgumentException($"Invalid product id - {orderItemAddRequest.ProductId}");
             }
+            
+            productDtos.Add(productDto);
         }
         
         // TO DO: Add logic for checking if User id exists in Users microservice table
@@ -150,7 +193,25 @@ public class OrdersService : IOrdersService
             return null;
         }
 
-        return _mapper.Map<OrderResponse>(addedOrder);
+        OrderResponse? addedOrderResponse = _mapper.Map<OrderResponse>(addedOrder);
+
+        if (addedOrderResponse != null)
+        {
+            foreach (OrderItemResponse orderItemResponse in addedOrderResponse.OrderItems)
+            {
+                ProductDTO? productDto =
+                    productDtos.FirstOrDefault(product => product.ProductId == orderItemResponse.ProductId);
+
+                if (productDto == null)
+                {
+                    continue;
+                }
+            
+                _mapper.Map<ProductDTO, OrderItemResponse>(productDto, orderItemResponse);
+            }
+        }
+
+        return addedOrderResponse;
     }
 
     public async Task<OrderResponse?> UpdateOrder(OrderUpdateRequest orderUpdateRequest)
@@ -168,6 +229,8 @@ public class OrdersService : IOrdersService
 
             throw new ArgumentException(errors);
         }
+
+        List<ProductDTO?> productDtos = new List<ProductDTO?>();
         
         // Validate order items using Fluent Validation
         foreach (OrderItemUpdateRequest orderItemUpdateRequest in orderUpdateRequest.OrderItems)
@@ -188,6 +251,8 @@ public class OrdersService : IOrdersService
             {
                 throw new ArgumentException($"Invalid product id - {orderItemUpdateRequest.ProductId}");
             }
+
+            productDtos.Add(productDto);
         }
         
         // TO DO: Add logic for checking if User id exists in Users microservice table
@@ -217,7 +282,27 @@ public class OrdersService : IOrdersService
             return null;
         }
 
-        return _mapper.Map<OrderResponse>(updatedOrder);
+        OrderResponse updatedOrderResponse = _mapper.Map<OrderResponse>(updatedOrder);
+
+        if (updatedOrderResponse == null)
+        {
+            return null;
+        }
+        
+        foreach (OrderItemResponse orderItemResponse in updatedOrderResponse.OrderItems)
+        {
+            ProductDTO? productDto =
+                await _productsMicroserviceClient.GetProductByProductId(orderItemResponse.ProductId);
+
+            if (productDto == null)
+            {
+                continue;
+            }
+            
+            _mapper.Map<ProductDTO, OrderItemResponse>(productDto, orderItemResponse);
+        }
+
+        return updatedOrderResponse;
     }
 
     public async Task<bool> DeleteOrder(Guid orderId)
