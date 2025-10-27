@@ -16,28 +16,37 @@ public class UsersMicroserviceClient
 
     public async Task<UserDTO?> GetUserByUserId(Guid userId)
     {
-        HttpResponseMessage response = await _httpClient.GetAsync($"/api/users/{userId}");
-
-        if (!response.IsSuccessStatusCode)
+        try
         {
-            if (response.StatusCode == HttpStatusCode.NotFound)
+            HttpResponseMessage response = await _httpClient.GetAsync($"/api/users/{userId}");
+
+            if (!response.IsSuccessStatusCode)
             {
-                return null;
+                if (response.StatusCode == HttpStatusCode.NotFound)
+                    return null;
+
+                if (response.StatusCode == HttpStatusCode.BadRequest)
+                    throw new HttpRequestException("Bad Request", null, HttpStatusCode.BadRequest);
+
+                // Fallback dummy data for non-success cases
+                return new UserDTO(PersonName: "Temporarily Unavailable",
+                    Email: "Temporarily unavailable",
+                    Gender: "Temporarily Unavailable",
+                    UserId: Guid.Empty);
             }
-            if (response.StatusCode == HttpStatusCode.BadRequest)
-            {
-                throw new HttpRequestException("Bad Request", null, HttpStatusCode.BadRequest);
-            }
-            throw new HttpRequestException($"Http request failed with status code {response.StatusCode}");
+
+            UserDTO? user = await response.Content.ReadFromJsonAsync<UserDTO>();
+            return user ?? throw new ArgumentException("Invalid user id");
         }
-
-        UserDTO? user = await response.Content.ReadFromJsonAsync<UserDTO>();
-
-        if (user == null)
+        catch (HttpRequestException ex)
         {
-            throw new ArgumentException("Invalid user id");
+            // Network-level fallback
+            Console.WriteLine($"[Warning] UsersMicroservice unreachable: {ex.Message}");
+            return new UserDTO(PersonName: "Temporarily Unavailable",
+                Email: "Temporarily unavailable",
+                Gender: "Temporarily Unavailable",
+                UserId: Guid.Empty);
         }
-
-        return user;
     }
+
 }

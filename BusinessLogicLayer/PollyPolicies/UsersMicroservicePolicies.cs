@@ -17,7 +17,7 @@ public class UsersMicroservicePolicies : IUsersMicroservicePolicies
     {
         AsyncRetryPolicy<HttpResponseMessage> retryPolicy = Policy.HandleResult<HttpResponseMessage>(result => !result.IsSuccessStatusCode)
             .WaitAndRetryAsync(
-                    retryCount: 5,
+                    retryCount: 2,
                     sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
                     onRetry: (result, timeSpan, retryCount, context) =>
                     {
