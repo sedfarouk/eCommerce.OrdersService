@@ -19,7 +19,7 @@ public class UsersMicroservicePolicies : IUsersMicroservicePolicies
         AsyncRetryPolicy<HttpResponseMessage> retryPolicy = Policy.HandleResult<HttpResponseMessage>(result => !result.IsSuccessStatusCode)
             .WaitAndRetryAsync(
                     retryCount: 5,
-                    sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(3, retryAttempt)),
+                    sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
                     onRetry: (result, timeSpan, retryCount, context) =>
                     {
                         _logger.LogInformation($"Retry {retryCount} after {timeSpan.TotalSeconds} seconds");
@@ -37,7 +37,7 @@ public class UsersMicroservicePolicies : IUsersMicroservicePolicies
                     // From open state to half open
                     onBreak: (result, timeSpan) =>
                     {
-                        _logger.LogInformation(($"Circuit breaker opened for {timeSpan.TotalMinutes} minutes due to consecutive 3 failures. The subsequent requests will be blocked"));
+                        _logger.LogInformation($"Circuit breaker opened for {timeSpan.TotalMinutes} minutes due to consecutive 3 failures. The subsequent requests will be blocked");
                     },
                     // From half open state to closed state
                     onReset: () =>

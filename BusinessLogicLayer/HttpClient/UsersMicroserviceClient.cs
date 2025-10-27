@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Http.Json;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.DTO;
+using Microsoft.Extensions.Logging;
+using Polly.CircuitBreaker;
 
 namespace eCommerce.OrdersMicroservice.BusinessLogicLayer.HttpClient;
 
@@ -9,9 +11,11 @@ using System.Net.Http;
 public class UsersMicroserviceClient
 {
     private readonly HttpClient _httpClient;
-    public UsersMicroserviceClient(HttpClient httpClient)
+    private readonly ILogger<UsersMicroserviceClient> _logger;
+    public UsersMicroserviceClient(HttpClient httpClient, ILogger<UsersMicroserviceClient> logger)
     {
         _httpClient = httpClient;
+        _logger = logger;
     }
 
     public async Task<UserDTO?> GetUserByUserId(Guid userId)
@@ -38,8 +42,13 @@ public class UsersMicroserviceClient
             UserDTO? user = await response.Content.ReadFromJsonAsync<UserDTO>();
             return user ?? throw new ArgumentException("Invalid user id");
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex) when (ex is HttpRequestException || ex is BrokenCircuitException)
         {
+            if (ex is BrokenCircuitException)
+            {
+                _logger.LogError(ex, "Request failed because circuit breaker is in 'Open' state. Returning dummy data.");
+            }
+            
             // Network-level fallback
             Console.WriteLine($"[Warning] UsersMicroservice unreachable: {ex.Message}");
             return new UserDTO(PersonName: "Temporarily Unavailable",
