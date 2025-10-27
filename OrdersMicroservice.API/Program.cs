@@ -34,6 +34,8 @@ builder.Services.AddCors(opt =>
 
 builder.Services.AddTransient<IUsersMicroservicePolicies, UsersMicroservicePolicies>();
 
+builder.Services.AddTransient<IProductsMicroservicePolicies, ProductsMicroservicePolicies>();
+
 builder.Services.AddHttpClient<UsersMicroserviceClient>(client =>
 {
     client.BaseAddress =
@@ -49,7 +51,8 @@ builder.Services.AddHttpClient<UsersMicroserviceClient>(client =>
 builder.Services.AddHttpClient<ProductsMicroserviceClient>(client =>
 {
     client.BaseAddress = new Uri($"http://{builder.Configuration["ProductsMicroserviceName"]}:{builder.Configuration["ProductsMicroservicePort"]}");
-});
+}).AddPolicyHandler(
+        builder.Services.BuildServiceProvider().GetRequiredService<IProductsMicroservicePolicies>().GetFallbackPolicy());
 
 var app = builder.Build();
 
