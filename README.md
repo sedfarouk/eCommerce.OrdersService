@@ -8,3 +8,4 @@ Layered Architecture
 * FluentValidations
 * Swagger
 * Docker
+* Polly [for microservice fault tolerance]
