@@ -41,15 +41,18 @@ builder.Services.AddHttpClient<UsersMicroserviceClient>(client =>
     client.BaseAddress =
         new Uri(
             $"http://{builder.Configuration["UsersMicroserviceName"]}:{builder.Configuration["UsersMicroservicePort"]}");
-}).AddPolicyHandler(
-    builder.Services.BuildServiceProvider().GetRequiredService<IUsersMicroservicePolicies>().GetRetryPolicy() 
-    )
-    .AddPolicyHandler(
-        builder.Services.BuildServiceProvider().GetRequiredService<IUsersMicroservicePolicies>().GetCircuitBreakerPolicy()
-        )
-        .AddPolicyHandler(
-            builder.Services.BuildServiceProvider().GetRequiredService<IUsersMicroservicePolicies>().GetTimeoutPolicy()
-        );
+})
+.AddPolicyHandler(
+    builder.Services.BuildServiceProvider().GetRequiredService<UsersMicroservicePolicies>().GetCombinedPolicies());
+    // .AddPolicyHandler(
+    // builder.Services.BuildServiceProvider().GetRequiredService<IUsersMicroservicePolicies>().GetRetryPolicy() 
+    // )
+    // .AddPolicyHandler(
+    //     builder.Services.BuildServiceProvider().GetRequiredService<IUsersMicroservicePolicies>().GetCircuitBreakerPolicy()
+    //     )
+    //     .AddPolicyHandler(
+    //         builder.Services.BuildServiceProvider().GetRequiredService<IUsersMicroservicePolicies>().GetTimeoutPolicy()
+    //     );
 
 builder.Services.AddHttpClient<ProductsMicroserviceClient>(client =>
 {
@@ -60,7 +63,7 @@ builder.Services.AddHttpClient<ProductsMicroserviceClient>(client =>
     builder.Services.BuildServiceProvider().GetRequiredService<ProductsMicroservicePolicies>().GetBulkHeadIsolationPolicy());
 
 var app = builder.Build();
-
+     
 // Exception Handling middleware
 app.UseExceptionHandlingMiddleware();
 
