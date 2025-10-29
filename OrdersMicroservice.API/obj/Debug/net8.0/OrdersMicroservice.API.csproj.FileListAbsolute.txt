@@ -12,6 +12,7 @@
 /home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/FluentValidation.dll
 /home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/FluentValidation.AspNetCore.dll
 /home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/FluentValidation.DependencyInjectionExtensions.dll
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/Microsoft.Extensions.Caching.StackExchangeRedis.dll
 /home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/Microsoft.Extensions.DependencyInjection.dll
 /home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
 /home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/Microsoft.Extensions.Diagnostics.dll
@@ -26,11 +27,13 @@
 /home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/MongoDB.Driver.dll
 /home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/MongoDB.Driver.Core.dll
 /home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/MongoDB.Libmongocrypt.dll
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/Pipelines.Sockets.Unofficial.dll
 /home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/Polly.dll
 /home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/Polly.Core.dll
 /home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/Polly.Extensions.Http.dll
 /home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/SharpCompress.dll
 /home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/Snappier.dll
+/home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/StackExchange.Redis.dll
 /home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/Swashbuckle.AspNetCore.Swagger.dll
 /home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /home/farouk/RiderProjects/eCommerceSolution.OrdersMicroservice/OrdersMicroservice.API/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerUI.dll

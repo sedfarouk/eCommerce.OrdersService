@@ -24,6 +24,11 @@ public static class DependencyInjection
 
         services.AddScoped<IOrdersService, OrdersService>();
 
+        services.AddStackExchangeRedisCache(opt =>
+        {
+            opt.Configuration = $"{configuration["REDIS_HOST"]}:{configuration["REDIS_PORT"]}";
+        });
+ 
         return services;
     }
 }
