@@ -36,7 +36,7 @@ public class ProductsMicroserviceClient
                 return productFromCache;
             }
             
-            HttpResponseMessage response = await _httpClient.GetAsync($"api/products/search/productid/{productId}");
+            HttpResponseMessage response = await _httpClient.GetAsync($"/gateway/products/search/productid/{productId}");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -44,8 +44,7 @@ public class ProductsMicroserviceClient
                 {
                     ProductDTO? productFromFallBack = await response.Content.ReadFromJsonAsync<ProductDTO>();
 
-                    if (productFromFallBack == null)
-                    {
+                    if (productFromFallBack == null) {
                         throw new NotImplementedException("Fallback policy not implemented");
                     }
 
