@@ -34,7 +34,7 @@ public class ProductsMicroservicePolicies : IProductsMicroservicePolicies
                     QuantityInStock: 0
                 );
 
-                HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
 
                 responseMessage.Content = new StringContent(JsonSerializer.Serialize(productDto), Encoding.UTF8, "application/json");
                 

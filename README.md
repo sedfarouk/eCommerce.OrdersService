@@ -9,6 +9,7 @@ Layered Architecture
 * Swagger
 * Docker
 * Polly [for microservice fault tolerance]
+* Redis [for Caching]
 
 Frontend Application: https://github.com/sedfarouk/eCommerce.Frontend
 

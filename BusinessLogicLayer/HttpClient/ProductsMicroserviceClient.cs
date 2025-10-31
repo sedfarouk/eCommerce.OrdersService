@@ -40,6 +40,18 @@ public class ProductsMicroserviceClient
 
             if (!response.IsSuccessStatusCode)
             {
+                if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+                {
+                    ProductDTO? productFromFallBack = await response.Content.ReadFromJsonAsync<ProductDTO>();
+
+                    if (productFromFallBack == null)
+                    {
+                        throw new NotImplementedException("Fallback policy not implemented");
+                    }
+
+                    return productFromFallBack;
+                }
+                
                 if (response.StatusCode == HttpStatusCode.NotFound)
                 {
                     return null;
@@ -54,6 +66,11 @@ public class ProductsMicroserviceClient
             }
 
             ProductDTO? productDto = await response.Content.ReadFromJsonAsync<ProductDTO>();
+
+            if (productDto == null)
+            {
+                throw new ArgumentException("Invalid Product Id");
+            }
 
             string cacheProduct = JsonSerializer.Serialize(productDto);
 
