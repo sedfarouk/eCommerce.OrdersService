@@ -106,7 +106,14 @@
       - /home/farouk/RiderProjects/redis-cache:/data
     networks:
       - ecommerce-network
-
+  
+  api-gateway-container:
+    image: "api-gateway:v1.0"
+    ports: 
+      - "4000:8080"
+    networks:
+      - ecommerce-network      
+  
 networks:
   orders-mongodb-network:
     driver: bridge
