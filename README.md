@@ -10,6 +10,7 @@ Layered Architecture
 * Docker
 * Polly [for microservice fault tolerance]
 * Redis [for Caching]
+* RabbitMQ [Asynchronous Microservices Communication]
 
 Frontend Application: https://github.com/sedfarouk/eCommerce.Frontend
 
