@@ -1,4 +1,5 @@
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.Mappers;
+using eCommerce.OrdersMicroservice.BusinessLogicLayer.RabbitMQ;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.ServiceContracts;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.services;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.Validators;
@@ -23,6 +24,8 @@ public static class DependencyInjection
         services.AddAutoMapper(typeof(OrderToOrderResponseMappingProfile).Assembly);
 
         services.AddScoped<IOrdersService, OrdersService>();
+
+        services.AddTransient<IRabbitMQProductNameUpdateConsumer, RabbitMQProductNameUpdateConsumer>();
 
         services.AddStackExchangeRedisCache(opt =>
         {

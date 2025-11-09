@@ -19,6 +19,7 @@
       - RabbitMQ_UserName=user
       - RabbitMQ_Password=password
       - RabbitMQ_Port=5672
+      - RabbitMQ_Products_Exchange=products.exchange
 
     ports:
       - "7000:8080"
@@ -53,12 +54,14 @@
       - RabbitMQ_UserName=user
       - RabbitMQ_Password=password
       - RabbitMQ_Port=5672
+      - RabbitMQ_Products_Exchange=products.exchange
 
     networks:
       - products-postgres-network
       - ecommerce-network
     depends_on:
       - products_postgres_container
+      - rabbitmq-container
 
   products_postgres_container:
     image: "postgres:16.10-trixie"
