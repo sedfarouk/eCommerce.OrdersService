@@ -31,6 +31,10 @@ public static class DependencyInjection
         {
             opt.Configuration = $"{configuration["REDIS_HOST"]}:{configuration["REDIS_PORT"]}";
         });
+
+        services.AddTransient<IRabbitMQProductNameUpdateConsumer, RabbitMQProductNameUpdateConsumer>();
+
+        services.AddHostedService<RabbitMQProductNameUpdateHostedService>();
  
         return services;
     }
